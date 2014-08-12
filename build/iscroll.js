@@ -249,6 +249,25 @@ function IScroll (el, options) {
 	this.wrapper = typeof el == 'string' ? document.querySelector(el) : el;
 	this.scroller = this.wrapper.children[0];
 	this.scrollerStyle = this.scroller.style;		// cache style for better performance
+	var _this = this;
+
+	Object.defineProperty( this.wrapper, "scrollTop", {
+	    get: function(){ return (-1 * _this.y) || 0; },
+	    set: function(value){
+	    	_this.scrollTo(_this.x, -1*value, 1);
+	    }
+	});
+
+	Object.defineProperty( this.wrapper, "scrollLeft", {
+	    get: function(){ return (-1 * _this.x) || 0; },
+	    set: function(value){
+	    	_this.scrollTo(-1*value, _this.y, 1);
+	    }
+	});
+
+	this.wrapper.addEventListener("DOMSubtreeModified",function(){
+		_this.refresh();
+	}, false);
 
 	this.options = {
 
@@ -258,7 +277,7 @@ function IScroll (el, options) {
 
 		snapThreshold: 0.334,
 
-// INSERT POINT: OPTIONS 
+// INSERT POINT: OPTIONS
 
 		startX: 0,
 		startY: 0,
@@ -315,7 +334,7 @@ function IScroll (el, options) {
 
 // INSERT POINT: NORMALIZATION
 
-	// Some defaults	
+	// Some defaults
 	this.x = 0;
 	this.y = 0;
 	this.directionX = 0;
