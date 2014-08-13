@@ -767,6 +767,9 @@ IScroll.prototype = {
 
 		for ( ; i < l; i++ ) {
 			this._events[type][i].apply(this, [].slice.call(arguments, 1));
+
+			var ev = new CustomEvent(type, {});
+			this.wrapper.dispatchEvent(ev);
 		}
 	},
 
