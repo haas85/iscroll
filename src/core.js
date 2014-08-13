@@ -444,10 +444,14 @@ IScroll.prototype = {
 			return;
 		}
 
-		var index = this._events[type].indexOf(fn);
+		if ( fn !== null && fn !== undefined ){
+			var index = this._events[type].indexOf(fn);
 
-		if ( index > -1 ) {
-			this._events[type].splice(index, 1);
+			if ( index > -1 ) {
+				this._events[type].splice(index, 1);
+			}
+		}else{
+			this._events[type].splice(0, this._events[type].length);
 		}
 	},
 

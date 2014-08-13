@@ -6,17 +6,23 @@
 
 <title>iScroll demo: 2d scroll</title>
 
-<script type="text/javascript" src="../../build/iscroll.js"></script>
+<script type="text/javascript" src="../../build/iscroll-probe.js"></script>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.js"></script>
 
 <script type="text/javascript">
 
 var myScroll;
 
 function loaded () {
-	myScroll = new IScroll('#wrapper', { scrollX: true, freeScroll: true });
+	myScroll = new IScroll('#wrapper', { scrollX: true, freeScroll: true, probeType: 2 });
+	myScroll.on("scroll", function(ev){console.log("SC", event);});
+	myScroll.on("scrollStart", function(ev){console.log("SCSTART", event);});
 }
 
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+
 
 </script>
 
