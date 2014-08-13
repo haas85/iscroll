@@ -1,9 +1,31 @@
+(function(){
+	HTMLElement.prototype.srcAddEventListener = HTMLElement.prototype.addEventListener;
+	HTMLElement.prototype.srcRemoveEventListener = HTMLElement.prototype.removeEventListener;
+	var EVENTS = "beforescrollstart,scrollcancel,scrollstart,scroll,scrollend,flick,zoomstart,zoomend";
+	HTMLElement.prototype.addEventListener = function(event, fn, useCapture){
+		if( EVENTS.indexOf(event.toLowerCase()) != -1 && this.iscroll ){
+			this.iscroll.on(event, fn);
+		}else{
+			this.srcAddEventListener(event, fn, useCapture);
+		}
+	};
+
+	HTMLElement.prototype.removeEventListener = function(event, fn, useCapture){
+		if( EVENTS.indexOf(event.toLowerCase()) != -1 && this.iscroll ){
+			this.iscroll.off(event, fn);
+		}else{
+			this.srcRemoveEventListener(event, fn, useCapture);
+		}
+	};
+})();
+
 
 function IScroll (el, options) {
 	this.wrapper = typeof el == 'string' ? document.querySelector(el) : el;
 	this.scroller = this.wrapper.children[0];
 	this.scrollerStyle = this.scroller.style;		// cache style for better performance
 	var _this = this;
+	this.wrapper.iscroll = _this;
 
 	Object.defineProperty( this.wrapper, "scrollTop", {
 	    get: function(){ return (-1 * _this.y) || 0; },
